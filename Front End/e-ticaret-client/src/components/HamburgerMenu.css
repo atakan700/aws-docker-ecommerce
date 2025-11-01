@@ -1,0 +1,9 @@
+.hamburger-wrapper {
+  position: relative;
+}
+
+.dropdown-absolute {
+  position: absolute;
+  top: 25px; /* hamburger ikonu altı */
+  left: 280px;
+}

@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "4U1TYtjJvFU=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ataka\\Desktop\\V1_Ecommers\\FileServices\\FileServices.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ataka\\.nuget\\packages\\awssdk.core\\4.0.0.26\\awssdk.core.4.0.0.26.nupkg.sha512",
+    "C:\\Users\\ataka\\.nuget\\packages\\awssdk.s3\\4.0.6.13\\awssdk.s3.4.0.6.13.nupkg.sha512",
+    "C:\\Users\\ataka\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\ataka\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\ataka\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
+    "C:\\Users\\ataka\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
+    "C:\\Users\\ataka\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",
+    "C:\\Users\\ataka\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.4.0\\swashbuckle.aspnetcore.swaggerui.6.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}

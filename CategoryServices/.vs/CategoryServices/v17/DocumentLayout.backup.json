@@ -1,0 +1,106 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|c:\\users\\ataka\\desktop\\react\\categoryservices\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|c:\\users\\ataka\\desktop\\react\\categoryservices\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|c:\\users\\ataka\\desktop\\react\\categoryservices\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|solutionrelative:properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|c:\\users\\ataka\\desktop\\react\\categoryservices\\categoryservices.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|solutionrelative:categoryservices.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|c:\\users\\ataka\\desktop\\react\\categoryservices\\controllers\\subcategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B945F6CD-CF27-4C7A-A630-A30A934341A4}|CategoryServices.csproj|solutionrelative:controllers\\subcategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\Properties\\launchSettings.json",
+              "RelativeToolTip": "Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-04T14:59:38.983Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAB0AAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-04T14:53:59.993Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CategoryServices.http",
+              "DocumentMoniker": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\CategoryServices.http",
+              "RelativeDocumentMoniker": "CategoryServices.http",
+              "ToolTip": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\CategoryServices.http",
+              "RelativeToolTip": "CategoryServices.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-09-04T14:53:03.501Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAACAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-09-04T14:18:08.395Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SubCategoryController.cs",
+              "DocumentMoniker": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\Controllers\\SubCategoryController.cs",
+              "RelativeDocumentMoniker": "Controllers\\SubCategoryController.cs",
+              "ToolTip": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\Controllers\\SubCategoryController.cs",
+              "RelativeToolTip": "Controllers\\SubCategoryController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFYAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-30T17:55:18.655Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

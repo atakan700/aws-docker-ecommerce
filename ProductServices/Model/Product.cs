@@ -1,0 +1,23 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProductServices.Model
+{
+    public class Product
+    {
+        [Key]
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string PictureUrl { get; set; }
+
+        public int Price { get; set; }
+
+        public string Description { get; set; }
+
+        //ForeignKey
+        public int SubCategoryId { get; set; }
+
+        public int Stock { get; set; }
+    }
+}

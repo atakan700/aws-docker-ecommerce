@@ -1,0 +1,77 @@
+version: "3.9"
+
+services:
+  category-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: category-db
+    environment:
+      SA_PASSWORD: "NotBad!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    networks:
+      - compose-network
+  
+  product-db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: product-db
+    environment:
+      SA_PASSWORD: "NotBad!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1434:1433"
+    networks:
+      - compose-network
+  
+  category-service:
+    build: ./CategoryServices
+    container_name: category-service
+    ports:
+      - "5001:8080"
+    depends_on:
+      - category-db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=category-db;Database=CategoryDb;User Id=sa;Password=NotBad!Passw0rd;TrustServerCertificate=True;"
+    networks:
+      - compose-network
+    command: >
+      /bin/bash -c "sleep 20 && dotnet CategoryServices.dll"
+  
+  product-service:
+    build: ./ProductServices
+    container_name: productservices_new
+    ports:
+      - "5000:8080"
+    depends_on:
+      - product-db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=product-db;Database=ProductDb;User Id=sa;Password=NotBad!Passw0rd;TrustServerCertificate=True;"
+    networks:
+      - compose-network
+    command: >
+      /bin/bash -c "sleep 20 && dotnet ProductServices.dll"
+      
+  
+  fileservice:
+    build: ./FileServices
+    container_name: fileservice
+    ports:
+      - "5139:8080" 
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      
+      AWS_ACCESS_KEY: "${AWS_ACCESS_KEY_ID}" 
+      AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_REGION: "eu-central-1" 
+      
+      S3_BUCKET_NAME: "ecommers-product-images"
+    networks:
+      - compose-network
+    command: >
+      dotnet FileServices.dll
+      
+networks:
+  compose-network:
+    driver: bridge

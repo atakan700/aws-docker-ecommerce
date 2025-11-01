@@ -1,0 +1,128 @@
+[
+  {
+    "ContainingType": "server.Controllers.SubCategoryController",
+    "Method": "GetSubCategories",
+    "RelativePath": "api/altkategoriler",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "server.Controllers.SubCategoryController",
+    "Method": "CreateSubCategories",
+    "RelativePath": "api/altkategoriler",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Dto",
+        "Type": "CategoryServices.Models.Entities.AddSubCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "server.Controllers.SubCategoryController",
+    "Method": "DeleteSubCategories",
+    "RelativePath": "api/altkategoriler/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "server.Controllers.SubCategoryController",
+    "Method": "UpdateSubCategories",
+    "RelativePath": "api/altkategoriler/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "subCategoryDto",
+        "Type": "CategoryServices.Models.Entities.SubCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CategoryServices.Controllers.CategoryController",
+    "Method": "GetKategoriler",
+    "RelativePath": "api/kategoriler",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CategoryServices.Controllers.CategoryController",
+    "Method": "CreateKategori",
+    "RelativePath": "api/kategoriler",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addCategoryDto",
+        "Type": "CategoryServices.Models.Entities.AddCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CategoryServices.Controllers.CategoryController",
+    "Method": "DeleteKategori",
+    "RelativePath": "api/kategoriler/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CategoryServices.Controllers.CategoryController",
+    "Method": "UpdateCategory",
+    "RelativePath": "api/kategoriler/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatecategoryDto",
+        "Type": "CategoryServices.Models.Entities.UpdateCategoryDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

@@ -1,0 +1,45 @@
+.category-card {
+  max-width: 500px;
+  margin: 40px auto;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-container .form-control,
+.form-container .form-select {
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.form-container .form-label {
+  font-weight: 600px;
+  margin-bottom: 5px;
+}
+
+.submit-button {
+  background-color: #ff9800;
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #e68900;
+}
+.page-wrapper{
+  display: flex;
+  justify-content: center;
+  margin: 100px;
+  align-items: center;
+}
