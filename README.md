@@ -11,9 +11,9 @@ Bu proje, Docker Compose ile orkestrasyonu yapılan mikroservis tabanlı bir e-t
 ## Teknolojiler
 
 - Docker, Docker Compose
-- AWS (S3, Lambda, API Gateway)
+- AWS (S3 , !! ilerleyen versiyonlarda(Lambda, API Gateway))
 - React, Node.js / ASP.NET Core
-- MySQL
+- MSSQL
 
 ## Kurulum
 
