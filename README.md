@@ -21,3 +21,7 @@ Bu proje, Docker Compose ile orkestrasyonu yapılan mikroservis tabanlı bir e-t
    ```bash
    git clone https://github.com/username/repo.git
    cd repo
+2. Docker-compose dosyasının bulunduğu dizinde :
+   ```bash
+    docker-compose up --build
+komutu ile proje çalıştırılabilir.
