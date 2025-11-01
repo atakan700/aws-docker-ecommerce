@@ -1,3 +1,23 @@
-Her servis kendi DockerFile ına sahip ve compose ile orkestrasyon yapmaya çalışıyorum.
-FileService ile AWS S3 buckete ürünlerin resimleri id'lerine göre depolanmaktadır.
-Bu proje hala geliştirilme aşamasındadır ve ilerde daha açık bir ReadMe dosyası ile tam ve hatasız bir kurulumun açıklaması adım adım eklenecektir.
+# E-Ticaret Mikroservis Projesi
+
+Bu proje, Docker Compose ile orkestrasyonu yapılan mikroservis tabanlı bir e-ticaret uygulamasıdır. Proje halen geliştirilme aşamasındadır; bazı servisler tamamlanmamış ve ilerleyen versiyonlarda eksik özellikler eklenecektir.
+
+## Proje Hakkında
+
+- Her servis kendi Dockerfile’ına sahiptir ve Docker Compose ile lokal ortamda çalıştırılabilir.
+- FileService servisi, ürün resimlerini AWS S3 bucket’a ürün ID’lerine göre depolar.
+- Hedef, mikroservis yönetimi, containerization ve bulut servis entegrasyonu konularında **pratik deneyim kazanmak**.
+
+## Teknolojiler
+
+- Docker, Docker Compose
+- AWS (S3, Lambda, API Gateway)
+- React, Node.js / ASP.NET Core
+- MySQL
+
+## Kurulum
+
+1. Depoyu klonlayın:
+   ```bash
+   git clone https://github.com/username/repo.git
+   cd repo
