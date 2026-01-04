@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  frontend:
+    
+    build:
+      context: .
+      
+      args:
+        - VITE_CATEGORY_API_URL=${VITE_CATEGORY_API_URL}
+        - VITE_PRODUCT_URL=${VITE_PRODUCT_URL}
+        - VITE_FILE_SERVICE_URL=${VITE_FILE_SERVICE_URL}
+        - VITE_CLOUDFRONT_URL=${VITE_CLOUDFRONT_URL}
+    
+    
+    container_name: e-ticaret-client
+    
+    
+    ports:
+      - "5174:80"
+    
+    
+    restart: always

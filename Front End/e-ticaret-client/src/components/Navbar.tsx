@@ -1,75 +1,121 @@
-import "../index.css"
 import { Link } from 'react-router-dom';
-import './Navbar.css'; // stil dosyası istersen buradan düzenle
-import HamburgerComponent from './HamburgerMenu.tsx';
+import HamburgerComponent from './HamburgerMenu'; 
+import { useFavorites } from "../context/FavoritesContext";
+import loveIcon from "../assets/Navbar/love.png";
+import heartIcon from "../assets/Navbar/heart.png";
 
-const user={
-  
-  name:'/veritaabnı/doğrulanmış/Name',
-  imageurl:'./src/assets/Carousel/carousel1.png',
-  imageSize:90,
-}
 
+const { favorites } = useFavorites();
+
+const user = {
+  name: 'Kullanıcı',
+  imageurl: './src/assets/Carousel/carousel1.png',
+  imageSize: 50, 
+};
 
 const Navbar = () => {
   return (
-    <nav className="navbar">
-      <div className="navbar-left">
-        <img
-        className="rounded-circle" 
-         src={user.imageurl} 
-         alt={'Photo of'+user.name}
-         style={{
-          width:user.imageSize,
-          height:user.imageSize
-         }}
-          />
-          <h2>{user.name } bey hoşgeldiniz</h2>
+    // Ana Navbar Konteynırı
+    <nav className="flex justify-between items-center bg-[#f8f9fa] px-6 py-3 shadow-md border-b border-gray-200">
       
+      {/* SOL KISIM: Kullanıcı Bilgisi */}
+      <div className="flex items-center gap-4">
+        <img
+          className="rounded-full object-cover border border-gray-300"
+          src={user.imageurl}
+          alt={'Photo of ' + user.name}
+          style={{
+            width: user.imageSize,
+            height: user.imageSize
+          }}
+        />
+        <h2 className="text-lg font-semibold text-gray-700 hidden lg:block">
+          {user.name} bey hoşgeldiniz
+        </h2>
       </div>
 
-      
-        <ul className="nav-links">
-          <HamburgerComponent/>
-          
-          
-          <div> <a href="" target="_blank" rel="noreferrer">
-          <img src="./src/assets/Navbar/user.png" alt="Giriş yap" className="social-icon" /> </a>
-          <li><Link to="/">Giriş Yap</Link></li>
-          </div>
+      {/* ORTA KISIM: Linkler ve Hamburger */}
+      <div className="flex items-center gap-8">
+        {/* Hamburger Menü En Solda */}
+        <HamburgerComponent />
 
-          <div> <a href="" target="_blank" rel="noreferrer">
-          <img src="./src/assets/Navbar/love.png" alt="Giriş yap" className="social-icon" /> </a>
-          <li><Link to="/favoriler">Favorilerim</Link></li>
-          </div>
-           
-          <div> <a href="" target="_blank" rel="noreferrer">
-          <img src="./src/assets/Navbar/bag.png" alt="Giriş yap" className="social-icon" /> </a>
-          <li><Link to="/sepetim">kutu</Link></li>
-          </div>
+        <ul className="flex items-center gap-6 list-none m-0 p-0">
           
-          
+          {/* Ana Sayfa */}
+          <li>
+            <Link to="/" className="flex items-center gap-2 text-gray-700 font-medium hover:text-blue-600 transition-colors no-underline">
+              <img src="./src/assets/Navbar/home.png" alt="Home" className="w-5 h-5" /> 
+              <span className="hidden md:inline">Ana Sayfa</span>
+            </Link>
+          </li>
+
+          {/* Giriş Yap */}
+          <li>
+            <Link to="/giris" className="flex items-center gap-2 text-gray-700 font-medium hover:text-blue-600 transition-colors no-underline">
+              <img src="./src/assets/Navbar/user.png" alt="User" className="w-5 h-5" />
+              <span className="hidden md:inline">Giriş Yap</span>
+            </Link>
+          </li>
+
+          {/* Favoriler */}
+         <Link 
+  to="/favorilerim" 
+  className="relative flex items-center gap-2 hover:text-red-500 transition group"
+>
+  <div className="relative">
+    <img 
+      src={favorites.length > 0 ? heartIcon : loveIcon}
+      alt="Favorilerim"
+      className="w-6 h-6 group-hover:scale-110 transition-transform"
+    />
+    
+    {favorites.length > 0 && (
+      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs 
+        font-bold rounded-full w-5 h-5 flex items-center justify-center">
+        {favorites.length}
+      </span>
+    )}
+  </div>
+  <span>Favorilerim</span>
+</Link>
+
+          {/* Sepetim */}
+          <li>
+            <Link to="/sepetim" className="flex items-center gap-2 text-gray-700 font-medium hover:text-blue-600 transition-colors no-underline">
+              <img src="./src/assets/Navbar/bag.png" alt="Bag" className="w-5 h-5" />
+              <span className="hidden md:inline">Sepetim</span>
+            </Link>
+          </li>
         </ul>
-      
+      </div>
 
-    <nav className="navbar navbar-light bg-light">
-      <div className="container-fluid">
-        <form className="d-flex">
-          <input type="search" className="form-control me-2 navbar-input"  placeholder="Ürün veya kategori arayınız." aria-label="Search"/>
-          <button className="btn btn-outline-success" type="submit">Ara</button>
+      {/* ARAMA ÇUBUĞU */}
+      <div className="hidden xl:flex items-center mx-4">
+        <form className="flex w-full">
+          <input
+            type="search"
+            className="w-[300px] px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+            placeholder="Ürün veya kategori ara..."
+            aria-label="Search"
+          />
+          <button 
+            className="px-4 py-2 bg-white text-green-600 border border-l-0 border-green-600 rounded-r-md hover:bg-green-600 hover:text-black transition-colors font-medium" 
+            type="submit"
+          >
+            Ara
+          </button>
         </form>
       </div>
-    </nav>
-      
-      <div className="navbar-right">
-        <a href="https://facebook.com" target="_blank" rel="noreferrer">
-          <img src="./src/assets/Navbar/facebook.png" alt="Facebook" className="social-icon" />
+
+      <div className="flex items-center gap-3">
+        <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:opacity-70 transition-opacity">
+          <img src="./src/assets/Navbar/facebook.png" alt="Facebook" className="w-6 h-6" />
         </a>
-        <a href="https://twitter.com" target="_blank" rel="noreferrer">
-          <img src="./src/assets/Navbar/twitter.png" alt="Twitter" className="social-icon" />
+        <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:opacity-70 transition-opacity">
+          <img src="./src/assets/Navbar/twitter.png" alt="Twitter" className="w-6 h-6" />
         </a>
-        <a href="https://instagram.com" target="_blank" rel="noreferrer">
-          <img src="./src/assets/Navbar/instagram.png" alt="Instagram" className="social-icon" />
+        <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:opacity-70 transition-opacity">
+          <img src="./src/assets/Navbar/instagram.png" alt="Instagram" className="w-6 h-6" />
         </a>
       </div>
     </nav>

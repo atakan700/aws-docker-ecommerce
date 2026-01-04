@@ -11,8 +11,8 @@ using ProductServices.Data;
 namespace ProductServices.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250811172042_newdatabase")]
-    partial class newdatabase
+    [Migration("20251210215058_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,29 @@ namespace ProductServices.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ProductServices.Model.Picture", b =>
+                {
+                    b.Property<int>("UrlId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UrlId"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Urls")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("UrlId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Pictures");
+                });
 
             modelBuilder.Entity("ProductServices.Model.Product", b =>
                 {
@@ -56,6 +79,22 @@ namespace ProductServices.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ProductServices.Model.Picture", b =>
+                {
+                    b.HasOne("ProductServices.Model.Product", "Product")
+                        .WithMany("Pictures")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ProductServices.Model.Product", b =>
+                {
+                    b.Navigation("Pictures");
                 });
 #pragma warning restore 612, 618
         }

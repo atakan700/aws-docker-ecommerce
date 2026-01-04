@@ -1,15 +1,19 @@
 import axios from "axios";
-import { FILE_SERVICE_URL,BASE_PRODUCT_URL} from "../constans/ProductApiUrl";
+import { FILE_SERVICE_URL,BASE_PRODUCT_URL, GET_Image_URL} from "../constans/ProductApiUrl";
 
 
-export type Product = {
+export interface Product  {
   id: number;
   name: string;
   description?: string;
-  pictureUrl?: string;
   subCategoryId: number;
   price: number;
   stock: number;
+  pictures:Picture[];
+}
+export  interface Picture {
+    id: number;
+    url: string; // Backend'den gelen PictureDto'daki isimle aynı olmalı (camelCase)
 }
 
 export const getProduct = async (): Promise<Product[]> => {
@@ -19,7 +23,7 @@ export const getProduct = async (): Promise<Product[]> => {
       headers: { "Content-Type": "application/json" },
     });
 
-    console.log("API'den Gelen Temiz Veriler:", response.data);
+    console.log("API'den Gelen Temiz Veriler:", response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -75,6 +79,7 @@ export const deleteProduct = async (id: number): Promise<any> => {
 
 }
 
+
 //FileService'e gidecek olan image post işlemi
 
 export const uploadImages = async (files: File[], userId: string) => {
@@ -103,14 +108,67 @@ export const uploadImages = async (files: File[], userId: string) => {
         }
       }
     );
-      console.log("Yüklenen Dosyalar:", response.data.urls);
+      console.log("Yüklenen Dosyalar:", response);
       alert("Yükleme başarılı!");
-      return response.data.urls
+      return response
 
    } catch (error) {
       console.error("Yükleme hatası:", error);
       alert("Bir hata oluştu.");
     }
 
+};
 
+export const getImages= async(Pimages : File[], userId:string,PicUrl:string)=>{ 
+
+   if (!Pimages || Pimages.length == 0) {
+
+    throw new Error("Ürün resmi yok veya sisteme yüklenmemiş")
+  }
+
+  try {
+    const response = await axios.post(`${GET_Image_URL}${userId}${PicUrl}`, userId)
+    return response
+  }
+  catch (error) {
+    console.log(error)
+  }
+
+} 
+
+// Resim yükleme ve veritabanına kaydetme
+export const uploadAndSaveImages = async (
+  files: File[], 
+  userId: string, 
+  productId: number
+) => {
+  
+  // 1. AWS'e yükle
+  const uploadResponse = await uploadImages(files, userId);
+  
+  if (!uploadResponse?.data?.urls) {
+    throw new Error("Resim yükleme başarısız");
+  }
+
+  // 2. Pictures tablosuna kaydet
+  try {
+    const saveResponse = await axios.patch(
+      `${BASE_PRODUCT_URL}${productId}/pictures`,
+      {
+        urls: uploadResponse.data.urls
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+    );
+    
+    console.log("Resimler Pictures tablosuna kaydedildi:", saveResponse.data);
+    return saveResponse.data;
+    
+  } catch (error) {
+    console.error("Veritabanına kaydetme hatası:", error);
+    throw error;
+  }
 };

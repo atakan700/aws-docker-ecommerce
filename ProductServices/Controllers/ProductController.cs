@@ -27,10 +27,24 @@ namespace ProductServices.Controllers
                     Description = x.Description,
                     Stock = x.Stock,
                     Price = x.Price,
-                    PictureUrl = x.PictureUrl,
-                    SubCategoryId = x.SubCategoryId
+                    SubCategoryId = x.SubCategoryId,
+                    Pictures = x.Pictures.Select(pic => new PictureDto
+                    {
+                        Id = pic.UrlId,
+                        Url = pic.Urls
+                    }).ToList()
                 }).ToListAsync();
-
+            if (product == null) return NotFound();
+            return Ok(product);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var product = await _context.Products.Include(
+                p=>p.Pictures).FirstOrDefaultAsync(p=>p.Id==id);
+                ;
+                
+            if (product == null) return NotFound();
             return Ok(product);
         }
 
@@ -59,7 +73,7 @@ namespace ProductServices.Controllers
                 Stock = productDto.Stock,
                 SubCategoryId = productDto.SubCategoryId,
                 Price = productDto.Price,
-                PictureUrl = productDto.PictureUrl,
+                
 
             };
 
@@ -119,22 +133,86 @@ namespace ProductServices.Controllers
 
             return NoContent();
         }
-    
 
-    [HttpPatch("id")]
-
-        public async Task<IActionResult> AddProductPicture(int id,AddPictureDto pictureDto)
+        [HttpPatch("{id}/pictures")]
+        // Düzeltme 1: Parametre tipi AddPicturesDto yapıldı (Çünkü liste gönderiyoruz)
+        public async Task<IActionResult> AddProductPictures(int id, [FromBody] AddPicturesDto addPicturesDto)
         {
-            var product =await _context.Products.FindAsync(id);
-            if (product == null)
+            try
             {
-                return BadRequest("Ürün henüz eklenmemiş olabilir");
+                // Validasyon: addPicturesDto.Urls listesini kontrol ediyoruz
+                if (addPicturesDto == null || addPicturesDto.Urls == null || !addPicturesDto.Urls.Any())
+                {
+                    return BadRequest("En az bir resim URL'si girilmelidir");
+                }
+
+                // Ürün var mı kontrol et
+                var productExists = await _context.Products.AnyAsync(p => p.Id == id);
+                if (!productExists)
+                {
+                    return NotFound($"ID'si {id} olan ürün bulunamadı");
+                }
+
+                // URL'lerden path'leri çıkar ve Pictures tablosuna ekle
+                var pictures = new List<Picture>();
+
+                // Düzeltme 2: addPicturesDto.Urls (Liste) üzerinde dönüyoruz
+                foreach (var url in addPicturesDto.Urls)
+                {
+                    string path = ExtractPathFromUrl(url);
+
+                    var picture = new Picture
+                    {
+                        
+                        Urls = path,
+                        ProductId = id
+                    };
+
+                    pictures.Add(picture);
+                }
+
+               
+                await _context.Pictures.AddRangeAsync(pictures);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    message = $"{pictures.Count} adet resim başarıyla kaydedildi",
+                    productId = id,
+                    // Geriye dönerken oluşturulan yeni ID'leri (UrlId) gösteriyoruz
+                    savedPictures = pictures.Select(p => new
+                    {
+                        urlId = p.UrlId,
+                        // Modelindeki property adı Urls olduğu için:
+                        url = p.Urls
+                    }).ToList()
+                });
             }
-            product.PictureUrl = pictureDto.PictureURL;
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Resim URL'leri kaydedilirken bir hata oluştu: {ex.Message}");
+            }
+        }
 
-            await _context.SaveChangesAsync();
+        // Yardımcı metodun gayet iyi, aynen kalabilir.
+        private string ExtractPathFromUrl(string url)
+        {
+            try
+            {
+                var uri = new Uri(url);
+                string path = uri.AbsolutePath.TrimStart('/');
 
-            return Ok("url kaydedildi");
+                if (path.StartsWith("users/"))
+                {
+                    path = path.Substring(6);
+                }
+
+                return path;
+            }
+            catch
+            {
+                return url;
+            }
         }
 
     } 

@@ -1,36 +1,49 @@
 import { useState } from "react";
-import Login from "./Login";
+import Login from "./Sign/Login";
 import Register from "./Sign/Register";
 
 function LoginRegister() {
   const [activeTab, setActiveTab] = useState<"login" | "register">("register");
 
   return (
-    <div className="d-flex justify-content-center align-items-start pt-5" style={{ minHeight: "100vh", backgroundColor: "#f6f6f6" }}>
-      <div style={{ width: "100%", maxWidth: "300px", backgroundColor: "#fff", padding: "20px", borderRadius: "10px", boxShadow: "0 0 10px rgba(0,0,0,0.1)" }}>
+    // .form-container ve dış kapsayıcı
+    <div className="min-h-screen bg-[#f6f6f6] flex justify-center items-start pt-20 font-sans">
+      <div className="w-full max-w-[400px] bg-white p-5 rounded-md shadow-md border border-gray-200">
         
-        {/* Sekmeler */}
-        <div className="d-flex mb-3">
+        {/* .form-tabs */}
+        <div className="flex justify-center mb-5 gap-0 rounded overflow-hidden border border-gray-200">
           <button
-            className={`btn w-50 ${activeTab === "login" ? "btn-warning text-white" : "btn-outline-warning"}`}
+            className={`
+              flex-1 py-3 text-sm font-medium transition-all duration-200 ease-in-out
+              ${activeTab === "login" 
+                ? "bg-yellow-400 text-white"  // .active stili (#ffa500 karşılığı)
+                : "bg-gray-50 text-gray-600 hover:bg-gray-100" // Pasif buton
+              }
+            `}
             onClick={() => setActiveTab("login")}
           >
             Giriş Yap
           </button>
           <button
-            className={`btn w-50 ${activeTab === "register" ? "btn-warning text-white" : "btn-outline-warning"}`}
+            className={`
+              flex-1 py-3 text-sm font-medium transition-all duration-200 ease-in-out
+              ${activeTab === "register" 
+                ? "bg-yellow-400 text-white" 
+                : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+              }
+            `}
             onClick={() => setActiveTab("register")}
           >
             Üye Ol
           </button>
         </div>
 
-        {/* Form */}
-        {activeTab === "register" ? <Register /> : <Login />}
+        {/* Form Bileşenleri */}
+        <div className="mt-4">
+          {activeTab === "register" ? <Register /> : <Login />}
+        </div>
       </div>
     </div>
-
-    
   );
 }
 

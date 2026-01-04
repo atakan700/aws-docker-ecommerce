@@ -10,7 +10,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173","http://localhost:5174")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -43,7 +43,7 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Category Service API V1");
 });
 
-
+app.UseRouting();
 
 app.UseCors("AllowReactApp");
 

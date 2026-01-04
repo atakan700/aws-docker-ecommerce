@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ataka\\Desktop\\React\\ProductServices\\ProductServices.csproj": {}
+    "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\ProductServices\\ProductServices.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ataka\\Desktop\\React\\ProductServices\\ProductServices.csproj": {
+    "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\ProductServices\\ProductServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ataka\\Desktop\\React\\ProductServices\\ProductServices.csproj",
+        "projectUniqueName": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\ProductServices\\ProductServices.csproj",
         "projectName": "ProductServices",
-        "projectPath": "C:\\Users\\ataka\\Desktop\\React\\ProductServices\\ProductServices.csproj",
+        "projectPath": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\ProductServices\\ProductServices.csproj",
         "packagesPath": "C:\\Users\\ataka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ataka\\Desktop\\React\\ProductServices\\obj\\",
+        "outputPath": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\ProductServices\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ataka\\AppData\\Roaming\\NuGet\\NuGet.Config",

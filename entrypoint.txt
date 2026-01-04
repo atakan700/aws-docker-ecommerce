@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+
+# PUBLISHED_DLL_NAME_HERE: Projenizin derlenmiş .dll adı
+dotnet ef database update --startup-project . --project YOUR_PROJECT_NAME
+
+# Uygulamayı Başlatma
+exec dotnet PUBLISHED_DLL_NAME_HERE.dll

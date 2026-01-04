@@ -6,13 +6,12 @@
 
         public string Name { get; set; }
         public string Description { get; set; }
-       
-        public string PictureUrl { get; set; }
         public int SubCategoryId { get; set; }
 
         public int Price { get; set; }
 
         public int Stock { get; set; }
+        public List<PictureDto> Pictures { get; set; }
     }
 
 
@@ -20,10 +19,9 @@
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string PictureUrl { get; set; }
         public int SubCategoryId { get; set; }
         public int Price { get; set; }
-        public int Stock { get; set; }= 0;
+        public int Stock { get; set; } = 0;
 
     }
 
@@ -32,11 +30,16 @@
         public int Id { get; set; }
 
     }
-    public class AddPictureDto
+
+    public class PictureDto
     {
         public int Id { get; set; }
+        public string Url { get; set; }
+    }
 
-        public string PictureURL { get; set; }
-
+    public class AddPicturesDto
+    {
+        public int Id { get; set; }
+        public List<string> Urls { get; set; }
     }
 }

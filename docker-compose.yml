@@ -9,6 +9,8 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
+    volumes:
+      - category_data:/var/opt/mssql
     networks:
       - compose-network
   
@@ -20,6 +22,8 @@ services:
       ACCEPT_EULA: "Y"
     ports:
       - "1434:1433"
+    volumes:
+      - product_data:/var/opt/mssql
     networks:
       - compose-network
   
@@ -50,10 +54,7 @@ services:
       ConnectionStrings__DefaultConnection: "Server=product-db;Database=ProductDb;User Id=sa;Password=NotBad!Passw0rd;TrustServerCertificate=True;"
     networks:
       - compose-network
-    command: >
-      /bin/bash -c "sleep 20 && dotnet ProductServices.dll"
-      
-  
+    
   fileservice:
     build: ./FileServices
     container_name: fileservice
@@ -61,16 +62,18 @@ services:
       - "5139:8080" 
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      
-      AWS_ACCESS_KEY: "${AWS_ACCESS_KEY_ID}" 
-      AWS_SECRET_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}" 
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
       AWS_REGION: "eu-central-1" 
-      
       S3_BUCKET_NAME: "ecommers-product-images"
     networks:
       - compose-network
     command: >
       dotnet FileServices.dll
+
+volumes:
+  category_data:
+  product_data:
       
 networks:
   compose-network:

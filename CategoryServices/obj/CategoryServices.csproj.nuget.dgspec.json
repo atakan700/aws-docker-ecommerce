@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\CategoryServices.csproj": {}
+    "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\CategoryServices\\CategoryServices.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\CategoryServices.csproj": {
+    "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\CategoryServices\\CategoryServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\CategoryServices.csproj",
+        "projectUniqueName": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\CategoryServices\\CategoryServices.csproj",
         "projectName": "CategoryServices",
-        "projectPath": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\CategoryServices.csproj",
+        "projectPath": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\CategoryServices\\CategoryServices.csproj",
         "packagesPath": "C:\\Users\\ataka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ataka\\Desktop\\React\\CategoryServices\\obj\\",
+        "outputPath": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\CategoryServices\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ataka\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -2,50 +2,52 @@ import { useEffect, useState } from "react";
 import Table from "./ProductsSet";
 import ProductAdd from "./ProductAdd";
 import type { TableColumn } from "../../assets/types/table";
-import { getProduct } from "../../hooks/ProductHooks";
+import { getProduct, type Product } from "../../hooks/ProductHooks"; // Import düzgün
 import ImageUpload from "./ImageUpload";
+import ProductImgCarousel from "./ProductImgCarousel";
+import { GET_Image_URL } from "../../constans/ProductApiUrl";
 
-
-interface Product {
-    id: number;
-    name: string;
-    description?: string;
-    pictureUrl?: string;
-    subCategoryId: number;
-    price: number;
-    stock: number;
-}
-function Proucts() {
+function Products() { // Fonksiyon ismini düzelttim (Proucts -> Products)
 
     const [product, setProduct] = useState<Product[]>([])
     const [selectedProductId, setSelectedProductId] = useState(0);
 
+    // CloudFront Domainini buraya ekle (Sonunda / olmasın)
+   
+
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getProduct();
-            console.log("Ürünler:", data)
-            setProduct(data)
-            //burada ise gelen ilk kategori seçiliyor ve alt kategori görüntülenmesine yardımcı oluyo 
-
+            const Data = await getProduct();
+        
+            if (Array.isArray(Data)) {
+                 setProduct(Data);
+            } else {
+                 setProduct([Data]); 
+            }
         };
-
-        // Sayfa açıldığında veriyi çek
         fetchData();
     }, []);
 
-  const handleProductAdded = (id: number) => {
-    setSelectedProductId(id); // yeni eklenen ürünün ID'si burada tutuluyor
-  };
-
-    const tableData: Product[] = product;
+    const handleProductAdded = (id: number) => {
+        setSelectedProductId(id);
+    };
 
     const tableColumns: TableColumn<Product>[] = [
         { header: 'id', accessor: 'id' },
         { header: 'Ürün Adı', accessor: 'name' },
-        { header: 'Açıklama', accessor: 'description' },
         { header: 'Fiyat', accessor: 'price' },
-        { header: 'Stok Sayısı', accessor: 'stock' },
-        {header:'ilk parametre',accessor:'pictureUrl'}
+        { header: 'Stok', accessor: 'stock' },
+        { 
+            header: 'Ürün Resmi', 
+            accessor: 'pictures',
+            render: (item) => (
+            // Logic'i component'e devrettik, burası tertemiz kaldı
+            <ProductImgCarousel 
+                pictures={item.pictures || []} 
+                cloudFrontDomain={GET_Image_URL} 
+            />
+                )
+        }
     ] as const;
 
     return (
@@ -53,9 +55,10 @@ function Proucts() {
             <div className="flex flex-col space-y-4 max-w-7xl h-1/2">
                 <ProductAdd onProductAdded={handleProductAdded} />
             </div>
-            <Table data={tableData} columns={tableColumns} />
-
+            {/* DÜZELTME: Data yerine product yazıldı */}
+            <Table data={product} columns={tableColumns} />
         </div>
     )
 }
-export default Proucts
+
+export default Products;

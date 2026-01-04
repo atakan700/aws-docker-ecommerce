@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4U1TYtjJvFU=",
+  "dgSpecHash": "En+ssdivOzM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ataka\\Desktop\\V1_Ecommers\\FileServices\\FileServices.csproj",
+  "projectFilePath": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\FileServices\\FileServices.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ataka\\.nuget\\packages\\awssdk.core\\4.0.0.26\\awssdk.core.4.0.0.26.nupkg.sha512",
     "C:\\Users\\ataka\\.nuget\\packages\\awssdk.s3\\4.0.6.13\\awssdk.s3.4.0.6.13.nupkg.sha512",

@@ -3,13 +3,19 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import './index.css'
-import App from './App.tsx'
+import './index.css';
+import App from './App.tsx';
+import { ProductCacheProvider } from './context/ProductCacheContext.tsx';
+import { FavoritesProvider } from './context/FavoritesContext.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <ProductCacheProvider>
+        <FavoritesProvider>
+          <App />
+        </FavoritesProvider>
+      </ProductCacheProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

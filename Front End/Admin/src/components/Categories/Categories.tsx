@@ -1,262 +1,236 @@
-import { useEffect, useState } from "react";
-import addIcon from "../../assets/Product/add.png"
-import saveIcon from "../../assets/Product/diskette.png"
-import { createCategory, createSubCategory, getCategories, type Category } from "../../hooks/CategoriesHooks"
+import { useEffect, useState, useCallback } from "react";
+import {
+  createCategory,
+  createSubCategory,
+  getCategories,
+  type Category,
+} from "../../hooks/CategoriesHooks";
 import Crud from "./Crud";
 import SubCrud from "./SubCrud";
 import { useAlert } from "../../context/AlertContext";
 import SkeletonCat from "./SkeletonCat";
+import CategoryForm from "./CategoryForm";
+import SubCategoryForm from "./SubCategoryForm";
 
-function Categories() {
+export default function Categories() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showAlert } = useAlert();
 
-    //Kategori seçimi ile alt kategorilerin açılmasını sağlayan değişkenler
-    const [categories, setCategories] = useState<Category[]>([])
-    const [loading, setLoading] = useState(true)
-    const [selectedCategoryId, setSelectedCategoryId] = useState<number>(0);
-    const [selectedCategory,setSelectedCategory]=useState("")
-    
-    //Kategori verileri geliyo
-    useEffect(() => {
-    // Veriyi çekme fonksiyonu
-    const fetchData = async () => {
-        const data = await getCategories();
-           setCategories(data);
-                setLoading(false);
-        //burada ise gelen ilk kategori seçiliyor ve alt kategori görüntülenmesine yardımcı oluyo 
-        if (data.length > 0) {
-            setSelectedCategoryId(data[0].id);
-           
-        }
-    };
+  // Get selected category data
+  const selectedCategory = categories.find((cat) => cat.id === selectedCategoryId);
 
-    // Sayfa açıldığında veriyi çek
-    fetchData();
+  // Fetch categories data
+  const fetchCategories = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await getCategories();
+      setCategories(data);
 
-    // Event listener: başka sayfada CRUD işlemi yapıldığında tekrar çek
-    const handler = () => fetchData();
-    window.addEventListener("CategoriesUpdated", handler);
+      // Auto-select first category if available
+      if (data.length > 0 && !selectedCategoryId) {
+        setSelectedCategoryId(data[0].id);
+      }
+    } catch (error) {
+      console.error("Kategoriler yüklenirken hata:", error);
+      showAlert("Kategoriler yüklenemedi. Lütfen sayfayı yenileyin.", "error");
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCategoryId, showAlert]);
 
+  // Initial fetch and event listener setup
+  useEffect(() => {
+    fetchCategories();
+
+    const handleCategoriesUpdate = () => fetchCategories();
+    window.addEventListener("CategoriesUpdated", handleCategoriesUpdate);
 
     return () => {
-        window.removeEventListener("CategoriesUpdated", handler);
+      window.removeEventListener("CategoriesUpdated", handleCategoriesUpdate);
     };
-}, []);
+  }, [fetchCategories]);
 
+  // Handle category selection
+  const handleSelectCategory = (id: number) => {
+    setSelectedCategoryId(id);
+  };
 
-  const handleSelectedCat=(id:number,name:string)=>{
-    setSelectedCategoryId(id)
-    setSelectedCategory(name)
-    
-  }
-//Kategori oluşturma
-const[newCatName,setNewCatName]=useState(""); 
-const[isCatAdd,setIsCatAdd]=useState(false)
-const createCat= async ()=>{
+  // Create new category
+  const handleCreateCategory = async (name: string) => {
+    setIsSubmitting(true);
 
-        setIsAdd(true)
-     if(newCatName===""){
-        setIsCatAdd(false)
-        showAlert("altkategori ismi boş olamazz!!","error")
-        return console.log("kategori ismi boş olamazz!!")        
-     }
-        
-     try{
-      const response=await  createCategory({name:newCatName})
-        if(typeof response=="object") {
-          
-         showAlert(`kategori eklendi: ${response} `, "success");
-        
-        }
-        else if(typeof response=="string"){
-            showAlert(`${response}`,"error")
-        } 
-          window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
-            setIsCatAdd(false)
-     }
-     catch(err){
-       
-         showAlert("Beklenmeyen bi hata oluştu !!❌", "error");
-     }
-    
-   
-}
-let addCatContent
-if(isCatAdd){
-    addCatContent=(
-        <div className="flex ">
-         <label className="w-auto" >
-            <input placeholder= "Kategori adı " value={newCatName} onChange={(e)=>setNewCatName(e.target.value)} type="text" />
-        </label>  
-        <button 
-        onClick={()=>createCat()} 
-        className="flex items-center gap-2 px-2 border-1 border-slate-300 shadow-sm rounded-md w-auto h-1/6">  
+    try {
+      const response = await createCategory({ name });
 
-        <img src={saveIcon} className="w-6 h-6" alt="Kaydet"/>
-        Kaydet
-        </button>     
-        </div>
+      if (typeof response === "object") {
+        showAlert(`"${name}" kategorisi eklendi`, "success");
+        window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
+      } else if (typeof response === "string") {
+        showAlert(response, "error");
+      }
+    } catch (error: any) {
+      console.error("Kategori oluşturma hatası:", error);
+      showAlert(
+        error.message || "Kategori eklenirken beklenmeyen bir hata oluştu",
+        "error"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    )
-}
-else{
-    addCatContent=(
-        <>    
-    <button onClick={()=>setIsCatAdd(true)} className=" flex items-center gap-2 px-2 border-1 border-slate-300 shadow-sm rounded-md w-auto h-1/6">
-            <img src={addIcon} className="w-6 h-6" alt="" />
-            Kategori Ekle
-    </button>
-    </>
-    )
-
-}
-
-//Altkategori oluşturma
-const[newSubCatName,setNewSubCatName]=useState(""); 
-const[isAdd,setIsAdd]=useState(false)
-const { showAlert } = useAlert();
-
-const createSubCat= async (id:number)=>{
-     setIsAdd(true)
-     if(newSubCatName===""){
-        setIsAdd(false)
-        showAlert("altkategori ismi boş olamazz!!","error")
-        return console.log("altkategori ismi boş olamazz!!")        
-     }
-        
-     try{
-      const response=await  createSubCategory({CategoryId:id,Name:newSubCatName})
-        if(typeof response=="object") {
-            setIsAdd(false)
-         showAlert(`Alt kategori eklendi: ${response.name} `, "success");
-        }
-        else if(typeof response=="string"){
-            showAlert(`${response}`,"error")
-        } 
-         window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
-        
-     }
-     catch(err){
-       
-         showAlert("Beklenmeyen bi hata oluştu !!❌", "error");
-     }
-    
-   
-}
-
-let addSubCatContent
-
-if(isAdd)
-{
-    addSubCatContent=(   
-    <div className="flex ">
-       <label className="w-auto" >
-            <input placeholder= "Yeni alt kategori adı " value={newSubCatName} onChange={(e)=>setNewSubCatName(e.target.value)} type="text" />
-        </label> 
-    <button 
-    onClick={()=>createSubCat(selectedCategoryId)} 
-    className="flex items-center gap-2 px-2 border-1 border-slate-300 shadow-sm rounded-md w-auto h-1/6">  
-
-        <img src={saveIcon} className="w-6 h-6" alt="Kaydet"/>
-        Kaydet
-        </button>       
-        
-    </div>
-    )
-}else{
-    addSubCatContent=(
-    <>    
-    <button onClick={()=>setIsAdd(true)} className=" flex items-center gap-2 px-2 border-1 border-slate-300 shadow-sm rounded-md w-auto h-1/6">
-            <img src={addIcon} className="w-6 h-6" alt="" />
-            Altkategori Ekle
-    </button>
-    </>
-
- )}
-
-
-    if (loading) {
-        return <div>
-            <SkeletonCat/>
-        </div>
+  // Create new subcategory
+  const handleCreateSubCategory = async (name: string) => {
+    if (!selectedCategoryId) {
+      showAlert("Lütfen önce bir kategori seçin", "error");
+      return;
     }
 
+    setIsSubmitting(true);
 
+    try {
+      const response = await createSubCategory({
+        CategoryId: selectedCategoryId,
+        Name: name,
+      });
+
+      if (typeof response === "object") {
+        showAlert(`"${response.name}" alt kategorisi eklendi`, "success");
+        window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
+      } else if (typeof response === "string") {
+        showAlert(response, "error");
+      }
+    } catch (error: any) {
+      console.error("Alt kategori oluşturma hatası:", error);
+      showAlert(
+        error.message || "Alt kategori eklenirken beklenmeyen bir hata oluştu",
+        "error"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return <SkeletonCat />;
+  }
+
+  if (categories.length === 0) {
     return (
-        <div >
-            <aside
-                className="h-4/5 w-4/5 bg-slate-100 text-slate-950 p-4 rounded border-1 shadow-sm flex flex-row space-x-4 ">
+      <div className="h-4/5 w-4/5 bg-slate-100 p-8 rounded border shadow-sm">
+        <div className="text-center">
+          <p className="text-gray-500 mb-4">Henüz kategori bulunmuyor</p>
+          <CategoryForm
+            onSubmit={handleCreateCategory}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+      </div>
+    );
+  }
 
-                <div className=" w-1/2 py-2 px-2">
-                    <h3>Kategoriler</h3>
-                    {addCatContent}
+  return (
+    <div>
+      <aside className="h-4/5 w-4/5 bg-slate-100 text-slate-950 p-4 rounded border shadow-sm flex flex-row space-x-4">
+        {/* Sol taraf - Kategoriler */}
+        <div className="w-1/2 py-2 px-2">
+          <h3 className="text-lg font-semibold mb-3">Kategoriler</h3>
 
-                    <ul className="py-3 pl-0">
-                        {categories.map((cat) => (
-                            <li key={cat.id}
-                                onClick={() => handleSelectedCat(cat.id,cat.name)}
-                                className={`flex items-center px-3 
-                                ${ selectedCategoryId===cat.id
-                                    ?"bg-slate-300 "
-                                    :""
-                                }  
-                                hover:bg-slate-300 rounded-sm`}>
-                                {cat.name}
-                                <Crud id={cat.id} name={cat.name}/>
-                            </li>
-                        ))}
-                    </ul>
+          <div className="mb-4">
+            <CategoryForm
+              onSubmit={handleCreateCategory}
+              isSubmitting={isSubmitting}
+            />
+          </div>
 
-                </div>
-
-                <div className=" w-2/3 px-2 py-2" >
-
-                    <h3>AltKategoriler</h3>
-                   {addSubCatContent}
-
-                    <div className="max-h-64 overflow-y-auto rounded">
-                        <table className=" ">
-                            <th>
-                                <tr className="border">
-                                    İsim
-                                </tr>
-
-                            </th>
-                            <th className="border-2">
-                                İşlemler
-                            </th>
-                           
-
-                            <tbody>
-                                {categories
-                                    .find((cat) => cat.id === selectedCategoryId)
-                                    ?.subCategories.map((sub) => (
-                                        <tr
-                                            key={sub.id}
-                                            className={`text-center border-b border-slate-300  "bg-gray-50" `}
-                                        >
-                                            <td >{sub.name}</td>
-                                          
-                                            <td  >
-                                                 <button className="hover:border border-slate-500">
-                                                    <SubCrud CategoryId={selectedCategoryId} id={sub.id} name={sub.name}/>
-                                                </button>
-                                               
-                                            </td>
-                                            
-                                        </tr>
-
-                                    ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-            </aside>
-
-
+          <ul className="space-y-1">
+            {categories.map((cat) => (
+              <li
+                key={cat.id}
+                onClick={() => handleSelectCategory(cat.id)}
+                className={`flex items-center justify-between px-3 py-2 rounded-sm cursor-pointer transition-colors ${
+                  selectedCategoryId === cat.id
+                    ? "bg-slate-300"
+                    : "hover:bg-slate-200"
+                }`}
+                role="button"
+                tabIndex={0}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handleSelectCategory(cat.id);
+                  }
+                }}
+                aria-selected={selectedCategoryId === cat.id}
+              >
+                <span className="font-medium">{cat.name}</span>
+                <Crud id={cat.id} name={cat.name} />
+              </li>
+            ))}
+          </ul>
         </div>
 
-    )
+        {/* Sağ taraf - Alt Kategoriler */}
+        <div className="w-2/3 px-2 py-2">
+          <h3 className="text-lg font-semibold mb-3">Alt Kategoriler</h3>
+
+          <div className="mb-4">
+            <SubCategoryForm
+              onSubmit={handleCreateSubCategory}
+              isSubmitting={isSubmitting}
+              disabled={!selectedCategoryId}
+            />
+          </div>
+
+          {selectedCategory ? (
+            <div className="max-h-96 overflow-y-auto rounded border border-slate-200">
+              <table className="w-full">
+                <thead className="bg-slate-200 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-semibold border-b border-slate-300">
+                      İsim
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold border-b border-slate-300">
+                      İşlemler
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {selectedCategory.subCategories.length > 0 ? (
+                    selectedCategory.subCategories.map((sub) => (
+                      <tr
+                        key={sub.id}
+                        className="border-b border-slate-200 hover:bg-slate-50 transition-colors"
+                      >
+                        <td className="px-4 py-3">{sub.name}</td>
+                        <td className="px-4 py-3">
+                          <SubCrud
+                            categoryId={selectedCategoryId!}
+                            id={sub.id}
+                            name={sub.name}
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={2} className="px-4 py-8 text-center text-gray-500">
+                        Bu kategoriye ait alt kategori bulunmuyor
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              Lütfen bir kategori seçin
+            </div>
+          )}
+        </div>
+      </aside>
+    </div>
+  );
 }
-export default Categories

@@ -25,12 +25,16 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = 104857600; // 100 MB
 });
 
-builder.Services.AddSingleton<S3Service>(sp =>
+// Program.cs
+builder.Services.AddScoped<S3Service>(provider =>
 {
-    var accessKey = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
-    var secretKey = Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY");
-    var region = "eu-central-1";
-    var bucketName = "ecommers-product-images";
+    var config = provider.GetRequiredService<IConfiguration>();
+
+    // Docker Compose'daki "environment" altýndaki ÝSÝMLERLE birebir ayný olmalý
+    var accessKey = config["AWS_ACCESS_KEY_ID"];
+    var secretKey = config["AWS_SECRET_ACCESS_KEY"];
+    var region = config["AWS_REGION"];
+    var bucketName = config["S3_BUCKET_NAME"]; // Compose'da S3_BUCKET_NAME yazdýysan burayý da öyle deðiþtirmelisin!
 
     return new S3Service(accessKey, secretKey, region, bucketName);
 });

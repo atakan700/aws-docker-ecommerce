@@ -519,11 +519,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ataka\\Desktop\\V1_Ecommers\\FileServices\\FileServices.csproj",
+      "projectUniqueName": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\FileServices\\FileServices.csproj",
       "projectName": "FileServices",
-      "projectPath": "C:\\Users\\ataka\\Desktop\\V1_Ecommers\\FileServices\\FileServices.csproj",
+      "projectPath": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\FileServices\\FileServices.csproj",
       "packagesPath": "C:\\Users\\ataka\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ataka\\Desktop\\V1_Ecommers\\FileServices\\obj\\",
+      "outputPath": "C:\\Users\\ataka\\Desktop\\Aws-docker-ecommers\\FileServices\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ataka\\AppData\\Roaming\\NuGet\\NuGet.Config",

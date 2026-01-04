@@ -1,105 +1,173 @@
+import { useState } from "react";
 import editIcon from "../../assets/Product/pencil.png";
 import deleteIcon from "../../assets/Product/bin.png";
-import addIcon from "../../assets/Product/add.png";
-import saveICon from "../../assets/Product/diskette.png"
-import { useState } from "react";
-import { createSubCategory, RemoveCategory, UpdateCategory } from "../../hooks/CategoriesHooks";
+import saveIcon from "../../assets/Product/diskette.png";
+import { RemoveCategory, UpdateCategory } from "../../hooks/CategoriesHooks";
 import { useAlert } from "../../context/AlertContext";
 
-
-
-
-//kategori ismi düzenleniyo
-interface CategoryProps{
-    id:number
-    name:string
+interface CategoryProps {
+  id: number;
+  name: string;
+  onUpdate?: () => void;
+  onDelete?: () => void;
 }
 
+export default function Crud({ name, id, onUpdate, onDelete }: CategoryProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [newCatName, setNewCatName] = useState(name);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { showAlert } = useAlert();
 
-function Crud({name ,id}:CategoryProps){
-
-
-
-const [newCatName,setNewName]=useState("");
-const[isEdit,setIsEdit]=useState(false);
-
-const updateCat=async ()=>{
-    if(newCatName===""){
-        setIsEdit(false)
-        return console.log("kategori ismi boş olamaz!!")        
-    }
-    try
-    {
-        await UpdateCategory(id,{name:newCatName})
-         console.log("id:",id,"name",name,"e sahip kategori'",newCatName,"'adı ile düzenlendi")
-            setIsEdit(false)
-            setNewName("")
-            window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
-    }catch(error){
-        console.log(error)
-    }
-   
-}
-
-let editContent
- if(isEdit){
-    editContent=( 
-    <div>
-        <label >
-            <input className="w-32" placeholder= "Kategori adı " value={newCatName} onChange={(e)=>setNewName(e.target.value)} type="text" />
-        </label>
-    <button onClick={updateCat} className="border-2 font-medium text-sm text-stone-500 text-right bg-slate-50 rounded hover:text-stone-900 hover:bg-slate-500 w-8">
-        <img src={saveICon} className="w-6 h-6" alt="Kaydet"/>
-        </button>
+  const validateName = (value: string): string | null => {
+    const trimmed = value.trim();
     
-        
-    </div>
-         )
-        }else{ editContent=(
-            <div>         
-            <button onClick={()=>setIsEdit(true)} className=" border-2 font-medium text-sm text-stone-500 text-right bg-slate-50 rounded hover:text-stone-900 hover:bg-orange-500 w-8">
-            <img src={editIcon} className="w-6 h-6" alt="Düzenle" />
-            </button>
-            </div>
-         
-        )}
-
-//Kategori silme
-
-const deleteCat=async()=>{
-      try
-    {
-        await RemoveCategory(id)
-         console.log("id:",id,"e sahip ",name," kategorisi silindi")
-         window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
-    }catch(error){
-        console.log(error)
+    if (!trimmed) {
+      return "Kategori ismi boş olamaz";
     }
-}
+    
+    if (trimmed.length < 2) {
+      return "Kategori ismi en az 2 karakter olmalıdır";
+    }
+    
+    if (trimmed.length > 50) {
+      return "Kategori ismi en fazla 50 karakter olabilir";
+    }
+    
+    return null;
+  };
 
+  const handleUpdate = async () => {
+    const validationError = validateName(newCatName);
+    
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
-let deleteContent=(
-    <>
-        <button onClick={()=>deleteCat()} className="  border-2 font-medium text-sm text-stone-500 text-right bg-slate-50 rounded hover:text-stone-900 hover:bg-red-600 w-8">
-            <img src={deleteIcon} className="w- h-6" alt="" />
-            
+    const trimmedName = newCatName.trim();
+    
+    // Check if name actually changed
+    if (trimmedName === name) {
+      setIsEditing(false);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      await UpdateCategory(id, { name: trimmedName });
+      showAlert(`"${name}" kategorisi "${trimmedName}" olarak güncellendi`, "success");
+      setIsEditing(false);
+      onUpdate?.();
+      window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
+    } catch (error: any) {
+      const errorMessage = error.message || "Kategori güncellenemedi";
+      setError(errorMessage);
+      showAlert(errorMessage, "error");
+      console.error("Kategori güncelleme hatası:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      `"${name}" kategorisini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`
+    );
+
+    if (!confirmed) return;
+
+    setIsSubmitting(true);
+
+    try {
+      await RemoveCategory(id);
+      showAlert(`"${name}" kategorisi silindi`, "success");
+      onDelete?.();
+      window.dispatchEvent(new CustomEvent("CategoriesUpdated"));
+    } catch (error: any) {
+      const errorMessage = error.message || "Kategori silinemedi";
+      showAlert(errorMessage, "error");
+      console.error("Kategori silme hatası:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setNewCatName(name);
+    setError(null);
+  };
+
+  if (isEditing) {
+    return (
+      <div className="flex items-center gap-2 ml-auto">
+        <div className="flex flex-col">
+          <input
+            type="text"
+            value={newCatName}
+            onChange={(e) => {
+              setNewCatName(e.target.value);
+              if (error) setError(null);
+            }}
+            className="w-40 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isSubmitting}
+            autoFocus
+            maxLength={50}
+            aria-label="Kategori adını düzenle"
+            aria-invalid={!!error}
+          />
+          {error && (
+            <span className="text-xs text-red-600 mt-1">{error}</span>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={handleUpdate}
+          disabled={isSubmitting}
+          className="p-1.5 border-2 bg-slate-50 rounded hover:bg-green-100 hover:border-green-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Kaydet"
+          aria-label="Değişiklikleri kaydet"
+        >
+          <img src={saveIcon} className="w-5 h-5" alt="" />
         </button>
-    </>
-)
+        <button
+          type="button"
+          onClick={handleCancel}
+          disabled={isSubmitting}
+          className="px-2 py-1 text-sm border rounded hover:bg-gray-100 transition-colors disabled:opacity-50"
+          aria-label="İptal"
+        >
+          İptal
+        </button>
+      </div>
+    );
+  }
 
-
-    return(
-            
-    <div className="flex px-6">   
-         {editContent}          
-        {deleteContent}
-       
+  return (
+    <div className="flex items-center gap-2 ml-auto">
+      <button
+        type="button"
+        onClick={() => setIsEditing(true)}
+        disabled={isSubmitting}
+        className="p-1.5 border-2 bg-slate-50 rounded hover:bg-orange-100 hover:border-orange-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        title="Düzenle"
+        aria-label={`${name} kategorisini düzenle`}
+      >
+        <img src={editIcon} className="w-5 h-5" alt="" />
+      </button>
+      <button
+        type="button"
+        onClick={handleDelete}
+        disabled={isSubmitting}
+        className="p-1.5 border-2 bg-slate-50 rounded hover:bg-red-100 hover:border-red-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        title="Sil"
+        aria-label={`${name} kategorisini sil`}
+      >
+        <img src={deleteIcon} className="w-5 h-5" alt="" />
+      </button>
     </div>
-             
-        
-
-    )
+  );
 }
-export default Crud
-
-
